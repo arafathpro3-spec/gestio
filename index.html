@@ -136,6 +136,17 @@ let ventes = JSON.parse(localStorage.getItem('dland_ventes')) || [];
 let panier = [];
 let html5QrCode = null; // Pour le scanner
 
+        // Cette vérification doit être la TOUTE PREMIÈRE chose que fait ton code
+(function() {
+    if (localStorage.getItem('dland_licence_active') === 'true') {
+        // On cache l'écran de verrouillage immédiatement avant même l'affichage complet
+        document.addEventListener('DOMContentLoaded', () => {
+            const verrou = document.getElementById('verrou-licence');
+            if (verrou) verrou.style.display = 'none';
+        });
+    }
+})();
+
 // --- 2. GESTION DU SCANNER QR ---
 function demarrerScanner() {
     html5QrCode = new Html5Qrcode("reader");
