@@ -175,7 +175,7 @@ function verifierLicence() {
         localStorage.setItem('dland_licence_active', 'true');
         alert("Félicitations ! KA GESTION PRO est activée.");
         // Force la disparition de l'écran bleu
-        document.getElementById('verrou-licence').style.display = 'none';
+        document.getElementById('verrou-licence').classList.add('hidden');
     } else {
         alert("Clé invalide. Contactez le développeur.");
     }
