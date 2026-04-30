@@ -6,7 +6,7 @@ const resourcesToCache = [
   'manifest.json',
   'app.js'
 ];
-
+//update 1
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(resourcesToCache)));
 });
