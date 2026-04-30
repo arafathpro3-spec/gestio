@@ -19,7 +19,7 @@
     <input type="text" id="cle-input" placeholder="Entrez votre clé d'activation" 
            class="w-full p-3 rounded-lg text-black mb-4 text-center font-mono">
     
-    <button onclick="verifierLicence()" class="bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-lg w-full mb-4">
+    <button  id="bouton-activer" onclick="verifierLicence()" class="bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-lg w-full mb-4">
         ACTIVER L'APPLICATION
     </button>
     
@@ -276,6 +276,14 @@ function afficherHistorique() {
         </div>
     `).join('');
 }
+
+        document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('activate-btn');
+  // Check if the element exists before adding the listener
+  if (btn) {
+    btn.addEventListener('click', verifierLicence);
+  }
+});
 
 function majUI() {
     const panierListe = document.getElementById('panier_liste');
