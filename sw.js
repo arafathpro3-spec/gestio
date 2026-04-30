@@ -3,7 +3,6 @@ const resourcesToCache = [
   'index.html',
   'tailwind.js',
   'qrcode.js',
-  'logo.png',
   'manifest.json',
   'app.js'
 ];
