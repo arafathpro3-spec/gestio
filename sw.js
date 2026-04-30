@@ -1,9 +1,11 @@
 const cacheName = 'dland-v1';
 const resourcesToCache = [
   'index.html',
-  'js/tailwind.js',
-  'js/qrcode.js',
-  'logo.png'
+  'tailwind.js',
+  'qrcode.js',
+  'logo.png',
+  'manifest.json',
+  'app.js'
 ];
 
 self.addEventListener('install', (e) => {
