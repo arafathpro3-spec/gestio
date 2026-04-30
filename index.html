@@ -162,12 +162,22 @@ function stopScanner() {
     }
 }
         // Ensure this is in the global scope or attached to the window object
- function verifierLicence() {
-        const key = document.getElementById('cle-input').value;
-        console.log("Checking license:", key);
-        // Your logic here
-    }
+function verifierLicence() {
+    const champ = document.getElementById('cle-input');
+    if(!champ) return alert("Erreur : Champ introuvable !");
+    
+    const saisie = champ.value.trim().toUpperCase();
+    console.log("Tentative avec : " + saisie);
 
+    if (clesValides.includes(saisie)) {
+        localStorage.setItem('dland_licence_active', 'true');
+        alert("Félicitations ! KA GESTION PRO est activée.");
+        // Force la disparition de l'écran bleu
+        document.getElementById('verrou-licence').style.display = 'none';
+    } else {
+        alert("Clé invalide. Contactez le développeur.");
+    }
+}
    
 // --- 3. AJOUTER AU STOCK ---
 function ajouterProduitStock() {
