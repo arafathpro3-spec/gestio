@@ -19,7 +19,7 @@
     <input type="text" id="cle-input" placeholder="Entrez votre clé d'activation" 
            class="w-full p-3 rounded-lg text-black mb-4 text-center font-mono">
     
-    <button onclick="verifierLicence()" class="bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-lg w-full mb-4">
+    <button id="activate-btn" class="bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-lg w-full mb-4">
         ACTIVER L'APPLICATION
     </button>
     
@@ -162,10 +162,14 @@ function stopScanner() {
     }
 }
         // Ensure this is in the global scope or attached to the window object
-function verifierLicence() {
-    console.log("Function called successfully!");
-    // Your logic here
-}
+ function verifierLicence() {
+        const key = document.getElementById('cle-input').value;
+        console.log("Checking license:", key);
+        // Your logic here
+    }
+
+         // 3. Attach the event listener (more reliable than 'onclick' attribute)
+    document.getElementById('activate-btn').addEventListener('click', verifierLicence);
 
 // --- 3. AJOUTER AU STOCK ---
 function ajouterProduitStock() {
