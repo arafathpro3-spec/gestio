@@ -1,5 +1,5 @@
 // Ta liste de clés valides (tu peux en créer plusieurs)
-const clesValides = ["DLAND-2026-PRO", "BOHICON-SALES-01", "COTONOU-DEMO", "KARIM5764"];
+const clesValides = [ "KARIM5764", "DLAND-2026-PRO", "BOHICON-SALES-01", "COTONOU-DEMO"];
 
 function controleAcces() {
     const licenceActivee = localStorage.getItem('dland_licence_active');
