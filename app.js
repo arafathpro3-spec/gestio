@@ -1,14 +1,6 @@
 // Ta liste de clés valides (tu peux en créer plusieurs)
 const clesValides = [ "KARIM5764", "DLAND-2026-PRO", "BOHICON-SALES-01", "COTONOU-DEMO"];
 
-function controleAcces() {
-    const licenceActivee = localStorage.getItem('dland_licence_active');
-    
-    if (!licenceActivee) {
-        document.getElementById('verrou-licence').classList.remove('hidden');
-    }
-}
-
 function verifierLicence() {
     const saisie = document.getElementById('cle-input').value.trim();
     
