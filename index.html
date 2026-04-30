@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-LAND GESTION PRO</title>
+    <script src="js/tailwind.js"></script>
+    <script src="js/qrcode.js"></script>
+</head>
+<body class="bg-slate-100 pb-20">
+
+    <div class="bg-blue-800 text-white p-4 shadow-lg flex justify-between items-center">
+        <div>
+            <h1 class="font-bold text-lg">D-LAND GESTION</h1>
+            <p id="date-text" class="text-xs opacity-80"></p>
+        </div>
+        <div class="text-right">
+            <span class="text-[10px] block uppercase">Bénéfice Jour</span>
+            <span id="stats_benefice" class="font-bold text-green-400 text-xl">0 F</span>
+        </div>
+    </div>
+
+    <main class="p-4">
+        
+        <div id="section-vente">
+            <div class="bg-white p-4 rounded-2xl shadow-sm mb-4">
+                <button onclick="demarrerScanner()" class="w-full bg-blue-50 text-blue-700 py-4 rounded-xl border-2 border-dashed border-blue-200 font-bold mb-3">
+                    📸 SCANNER UN CODE
+                </button>
+                <div id="reader" class="rounded-lg overflow-hidden mb-3"></div>
+                
+                <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Produit</label>
+                <select id="select_produit" class="w-full p-3 bg-gray-50 border rounded-xl mb-3 outline-none"></select>
+                
+                <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Quantité</label>
+                <input id="qte_vente" type="number" value="1" min="1" class="w-full p-3 bg-gray-50 border rounded-xl mb-4">
+
+                <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Prix de vente (Unitaire)</label>
+                <input id="prix_final_vente" type="number" class="w-full p-3 bg-blue-50 border-2 border-blue-200 rounded-xl mb-4 font-bold text-blue-700">
+                
+                <button id="add-to-cart-btn" onclick="ajouterAuPanier()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-md active:scale-95 transition-transform">
+                             AJOUTER AU PANIER
+                </button>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl shadow-sm">
+                <h3 class="font-bold text-gray-500 text-sm mb-3 uppercase italic">Panier en cours</h3>
+                <div id="panier_liste" class="divide-y space-y-2"></div>
+                <div class="mt-4 pt-3 border-t flex justify-between items-center">
+                    <span class="font-bold text-gray-400">TOTAL</span>
+                    <span id="total_panier" class="text-2xl font-black text-blue-900">0 F</span>
+                </div>
+                <button onclick="validerVente()" class="w-full bg-green-600 text-white py-4 rounded-xl mt-6 font-bold shadow-lg active:scale-95 transition-transform">
+                    VALIDER LA VENTE
+                </button>
+            </div>
+        </div>
+
+        <div id="section-stock" class="hidden">
+            <div class="bg-white p-5 rounded-2xl shadow-sm">
+                <h2 class="font-black text-orange-600 mb-4 uppercase text-center border-b pb-2">Nouveau Produit</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-400 uppercase">Désignation / Code</label>
+                        <input id="in_nom" placeholder="Ex: Redmi Note 13" class="w-full p-3 bg-gray-50 border rounded-xl outline-blue-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Prix Achat</label>
+                            <input id="in_achat" type="number" placeholder="0" class="w-full p-3 bg-gray-50 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Prix Vente</label>
+                            <input id="in_vente" type="number" placeholder="0" class="w-full p-3 bg-gray-50 border rounded-xl">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-400 uppercase">Quantité en stock</label>
+                        <input id="in_qte" type="number" placeholder="Ex: 50" class="w-full p-3 bg-gray-50 border rounded-xl">
+                    </div>
+                    <button onclick="ajouterProduitStock()" class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold shadow-md hover:bg-orange-600">
+                        ENREGISTRER EN STOCK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-historique" class="hidden p-4">
+            <div class="bg-white p-4 rounded-2xl shadow-sm mb-4">
+               <h2 class="text-xl font-bold text-gray-800 mb-4">Historique des Ventes</h2>
+                  <div id="liste_historique" class="space-y-3">
+                   </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 w-full bg-white border-t flex justify-around p-3 shadow-2xl z-50">
+        <button onclick="onglet('vente')" class="flex flex-col items-center text-blue-600">
+            <span class="text-xl">🛒</span>
+            <span class="text-[10px] font-bold">VENTE</span>
+        </button>
+        <button onclick="onglet('stock')" class="flex flex-col items-center text-gray-400">
+            <span class="text-xl">📦</span>
+            <span class="text-[10px] font-bold">STOCK</span>
+        </button>
+        <button onclick="onglet('historique')" class="flex flex-col items-center text-gray-400">
+            <span class="text-xl">🕒</span>
+            <span class="text-[10px] font-bold">HISTORIQUE</span>
+        </button>
+    </nav>
+
+    <script>
+       // --- 1. INITIALISATION ---
+let produits = JSON.parse(localStorage.getItem('dland_produits')) || [];
+let ventes = JSON.parse(localStorage.getItem('dland_ventes')) || [];
+let panier = [];
+let html5QrCode = null; // Pour le scanner
+
+// --- 2. GESTION DU SCANNER QR ---
+function demarrerScanner() {
+    html5QrCode = new Html5Qrcode("reader");
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+    html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+        // Quand on scanne, on cherche le produit par son nom ou son code
+        const p = produits.find(item => item.nom === decodedText);
+        if (p) {
+            document.getElementById('select_produit').value = p.id;
+            alert("Produit détecté : " + p.nom);
+            stopScanner();
+        } else {
+            alert("Produit inconnu : " + decodedText);
+        }
+    }).catch(err => console.error("Erreur scanner:", err));
+}
+
+function stopScanner() {
+    if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+            document.getElementById('reader').innerHTML = "";
+        });
+    }
+}
+
+// --- 3. AJOUTER AU STOCK ---
+function ajouterProduitStock() {
+    const nom = document.getElementById('in_nom').value.trim();
+    const achat = parseFloat(document.getElementById('in_achat').value);
+    const vente = parseFloat(document.getElementById('in_vente').value);
+    const qte = parseInt(document.getElementById('in_qte').value);
+
+    if (!nom || isNaN(achat) || isNaN(vente) || isNaN(qte)) {
+        alert("Veuillez remplir tous les champs !");
+        return;
+    }
+
+    // --- LA LOGIQUE DE VÉRIFICATION ICI ---
+    // On cherche si un produit avec le même nom existe déjà (on ignore les majuscules)
+    const produitExistant = produits.find(p => p.nom.toLowerCase() === nom.toLowerCase());
+
+    if (produitExistant) {
+        // Si il existe, on ajoute juste la nouvelle quantité au stock actuel
+        produitExistant.stock += qte;
+        // Optionnel : on met à jour les prix si ils ont changé
+        produitExistant.achat = achat;
+        produitExistant.vente = vente;
+        alert("Stock mis à jour pour " + nom);
+    } else {
+        // Si il n'existe pas, on crée un nouveau produit comme avant
+        produits.push({ 
+            id: Date.now(), 
+            nom: nom, 
+            achat: achat, 
+            vente: vente, 
+            stock: qte 
+        });
+        alert("Nouveau produit enregistré !");
+    }
+
+    // Sauvegarde et rechargement
+    localStorage.setItem('dland_produits', JSON.stringify(produits));
+    location.reload();
+}
+function ajouterAuPanier() {
+    const sel = document.getElementById('select_produit');
+    const qteInput = document.getElementById('qte_vente');
+    const prixInput = document.getElementById('prix_final_vente'); // Nouveau
+
+    const idChoisi = sel.value;
+    const qteSaisie = parseInt(qteInput.value);
+    const prixApplique = parseFloat(prixInput.value); // On récupère le prix tapé
+
+    const produitTrouve = produits.find(p => p.id == idChoisi);
+
+    if (produitTrouve && qteSaisie > 0 && !isNaN(prixApplique)) {
+        if (produitTrouve.stock >= qteSaisie) {
+            const article = {
+                id: produitTrouve.id,
+                nom: produitTrouve.nom,
+                achat: produitTrouve.achat, // On garde l'achat pour le bénéfice
+                vente: prixApplique,       // ON UTILISE LE PRIX MODIFIÉ
+                qte_v: qteSaisie
+            };
+
+            panier.push(article);
+            majUI();
+            alert("Ajouté avec le prix : " + prixApplique + " F");
+        } else {
+            alert("Stock insuffisant !");
+        }
+    } else {
+        alert("Vérifiez le produit, la quantité et le prix.");
+    }
+}
+ 
+// --- 4. NAVIGATION ET INTERFACE ---
+function onglet(nom) {
+    document.getElementById('section-vente').classList.toggle('hidden', nom !== 'vente');
+    document.getElementById('section-stock').classList.toggle('hidden', nom !== 'stock');
+    document.getElementById('section-historique').classList.toggle('hidden', nom !== 'historique');
+    if (nom === 'historique') {
+        afficherHistorique();
+    }
+      console.log("Switching to tab:", name);
+}
+
+function afficherHistorique() {
+    const conteneur = document.getElementById('liste_historique');
+    
+    if (!ventes || ventes.length === 0) {
+        conteneur.innerHTML = "<p class='text-gray-500 italic p-4 text-center'>Aucune vente aujourd'hui.</p>";
+        return;
+    }
+
+    const historiqueInverse = [...ventes].reverse();
+
+    conteneur.innerHTML = historiqueInverse.map(v => `
+        <div class="bg-white p-3 rounded-xl shadow-sm mb-3 border-l-4 border-blue-600 text-left">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-[10px] text-gray-400 font-bold">${v.date}</span>
+                <span class="text-blue-700 font-bold">${v.total} F</span>
+            </div>
+            <div class="text-xs text-gray-700">
+                ${v.articles.map(a =>` ${a.nom} (x${a.qte_v})`)
+            }
+            </div>
+        </div>
+    `).join('');
+}
+
+function majUI() {
+    const panierListe = document.getElementById('panier_liste');
+    const totalElt = document.getElementById('total_panier');
+    let cumul = 0;
+
+    // Vider la liste actuelle avant de la reconstruire
+    if (panierListe) panierListe.innerHTML = "";
+
+    panier.forEach((article) => {
+        cumul += article.vente * article.qte_v;
+        
+        // Optionnel : Afficher le nom de l'article dans la liste
+        if (panierListe) {
+            panierListe.innerHTML += `<div class="py-2 flex justify-between">
+                <span>${article.nom} (x${article.qte_v})</span>
+                <span>${article.vente * article.qte_v} F</span>
+            </div>`;
+        }
+    });
+
+    // Mettre à jour le montant TOTAL
+    if (totalElt) {
+        totalElt.innerText = cumul + " F";
+    }
+}
+
+
+
+window.onload = function() {
+    const sel = document.getElementById('select_produit');
+    // Ensure "produits" is defined globally or within this scope
+    if (sel && typeof produits !== 'undefined' && produits.length > 0) {
+        sel.innerHTML = produits.map(item => 
+            `<option value="${item.id}">${item.nom} (Stock: ${item.stock})</option>`
+        ).join('');
+    }
+    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+    const qty = document.getElementById('qte_vente').value;
+    console.log("Ajouté au panier: " + qty);
+})
+// Quand on choisit un produit dans la liste, on affiche son prix de base
+document.getElementById('select_produit').addEventListener('change', function() {
+    const idChoisi = this.value;
+    const produit = produits.find(p => p.id == idChoisi);
+    if (produit) {
+        document.getElementById('prix_final_vente').value = produit.vente;
+    }
+})
+// Calcul du bénéfice total de toutes les ventes enregistrées
+let totalBenefice = ventes.reduce((acc, v) => acc + (v.benefice || 0), 0);
+const benefElt = document.getElementById('stats_benefice');
+if (benefElt) {
+    benefElt.innerText = totalBenefice + " F";
+}
+    
+    const dateElt = document.getElementById('date-text');
+    if(dateElt) dateElt.innerText = new Date().toLocaleDateString('fr-FR');
+};
+
+window.validerVente = function() {
+    if (panier.length === 0) {
+        alert("Le panier est vide !");
+        return;
+    }
+
+    let beneficeTotalVente = 0;
+
+    // 1. Mise à jour du stock et calcul du bénéfice
+    panier.forEach(articlePanier => {
+        // Trouver le produit correspondant dans la liste globale 'produits'
+        const produitOriginal = produits.find(p => p.id == articlePanier.id);
+        
+        if (produitOriginal) {
+            // Soustraire la quantité vendue du stock réel
+            produitOriginal.stock -= articlePanier.qte_v;
+            
+            // Calculer le bénéfice pour cet article : (PrixVente - PrixAchat) * Quantité
+            const beneficeArticle = (articlePanier.vente - articlePanier.achat) * articlePanier.qte_v;
+            beneficeTotalVente += beneficeArticle;
+        }
+    });
+
+    // 2. Enregistrer la vente dans l'historique
+    const nouvelleVente = {
+        date: new Date().toLocaleString('fr-FR'),
+        articles: [...panier],
+        benefice: beneficeTotalVente,
+        total: document.getElementById('total_panier').innerText
+    };
+    
+    ventes.push(nouvelleVente);
+
+    // 3. Sauvegarder les changements dans le LocalStorage
+    localStorage.setItem('dland_produits', JSON.stringify(produits));
+    localStorage.setItem('dland_ventes', JSON.stringify(ventes));
+
+    // 4. Réinitialisation
+    alert("Vente validée ! Bénéfice réalisé : " + beneficeTotalVente + " F");
+    
+    panier = []; // Vider le panier
+    majUI();    // Rafraîchir l'écran
+    location.reload(); // Recharger pour mettre à jour les menus déroulants et le stock
+};
+    </script>
+</body>
+</html>
