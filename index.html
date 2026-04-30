@@ -388,14 +388,7 @@ window.validerVente = function() {
         }
     });
 
-    
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('SW enregistré !', reg))
-        .catch(err => console.error('Échec SW:', err));
-    });
-  }
+ 
 
     // 2. Enregistrer la vente dans l'historique
     const nouvelleVente = {
@@ -419,5 +412,15 @@ window.validerVente = function() {
     location.reload(); // Recharger pour mettre à jour les menus déroulants et le stock
 };
     </script>
+
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW enregistré !', reg))
+        .catch(err => console.error('Échec SW:', err));
+    });
+  }
+</script>
 </body>
 </html>
