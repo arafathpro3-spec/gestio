@@ -12,6 +12,23 @@
 </head>
 <body class="bg-slate-100 pb-20">
 
+    <div id="verrou-licence" class="fixed inset-0 bg-blue-900 z-[100] flex flex-col items-center justify-center p-6 text-white hidden">
+    <h1 class="text-2xl font-bold mb-4">KA GESTION PRO</h1>
+    <p class="text-center mb-6 text-sm opacity-80">Cette application nécessite une licence activée pour fonctionner.</p>
+    
+    <input type="text" id="cle-input" placeholder="Entrez votre clé d'activation" 
+           class="w-full p-3 rounded-lg text-black mb-4 text-center font-mono">
+    
+    <button onclick="verifierLicence()" class="bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-lg w-full mb-4">
+        ACTIVER L'APPLICATION
+    </button>
+    
+    <a href="https://wa.me/0157645791?text=Je%20souhaite%20acheter%20une%20licence" 
+       class="text-xs underline opacity-70">
+        Contactez le développeur pour obtenir une clé
+    </a>
+</div>
+
     <div class="bg-blue-800 text-white p-4 shadow-lg flex justify-between items-center">
         <div>
             <h1 class="font-bold text-lg">KA GESTION</h1>
