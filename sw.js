@@ -16,11 +16,18 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Stratégie : Cache First, then Network
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((res) => {
-      return res || fetch(e.request);
+      // Si la ressource est dans le cache, on la renvoie
+      if (res) {
+        return res;
+      }
+      // Sinon, on essaie de la chercher sur le réseau
+      return fetch(e.request).catch(() => {
+        // Optionnel : renvoyer une page d'erreur personnalisée ici si vous voulez
+        console.log("Ressource non trouvée et réseau absent.");
+      });
     })
   );
 });
