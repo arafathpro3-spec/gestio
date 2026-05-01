@@ -18,15 +18,27 @@ self.addEventListener('install', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((res) => {
-      // Si la ressource est dans le cache, on la renvoie
-      if (res) {
-        return res;
+    caches.match(e.request).then((response) => {
+      // 1. Si le fichier est dans le cache, on le renvoie
+      if (response) {
+        return response;
       }
-      // Sinon, on essaie de la chercher sur le réseau
+
+      // 2. Sinon, on tente de le chercher sur le réseau
       return fetch(e.request).catch(() => {
-        // Optionnel : renvoyer une page d'erreur personnalisée ici si vous voulez
-        console.log("Ressource non trouvée et réseau absent.");
+        console.log("Ressource non trouvée et réseau absent : " + e.request.url);
+        
+        // 3. Si c'est une navigation (page html), on peut renvoyer index.html par défaut
+        if (e.request.mode === 'navigate') {
+          return caches.match('index.html');
+        }
+        
+        // 4. Pour le reste, on renvoie une réponse vide pour éviter le crash TypeError
+        return new Response('Hors ligne et ressource non cachée', {
+          status: 503,
+          statusText: 'Service Unavailable',
+          headers: new Headers({ 'Content-Type': 'text/plain' })
+        });
       });
     })
   );
