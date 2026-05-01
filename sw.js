@@ -1,6 +1,5 @@
 const nom_du_cache = 'dland-v1';
 const ressources_a_mettre_en_cache = [
-  './',
   'index.html',
   'tailwind.js',
   'qrcode.js',
