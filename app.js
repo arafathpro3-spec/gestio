@@ -144,3 +144,23 @@ onAuthStateChanged(auth, (user) => {
 });
 // Lancer le contrôle dès le chargement de la page
 window.addEventListener('load', controleAcces);
+
+
+const auth = getAuth(app);
+
+// Définis tes fonctions
+async function seConnecter() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    // ... reste de ton code de connexion ...
+}
+
+async function creerCompte() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    // ... reste de ton code de création ...
+}
+
+// --- ÉTAPE CRUCIALE : Rendre les fonctions visibles pour le HTML ---
+window.seConnecter = seConnecter;
+window.creerCompte = creerCompte;
