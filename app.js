@@ -97,5 +97,50 @@ function chargerVentes(userId) {
         });
     });
 }
+
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const auth = getAuth();
+
+// --- Fonction Se Connecter ---
+window.seConnecter = () => {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    
+    signInWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
+            alert("Connexion réussie ! Vos données sont en cours de synchronisation.");
+        })
+        .catch((error) => {
+            alert("Erreur : " + error.message);
+        });
+};
+
+// --- Fonction Créer un Compte ---
+window.creerCompte = () => {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    
+    createUserWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
+            alert("Compte créé avec succès !");
+        })
+        .catch((error) => {
+            alert("Erreur lors de l'inscription : " + error.message);
+        });
+};
+
+// --- Gestion de l'affichage automatique ---
+onAuthStateChanged(auth, (user) => {
+    const overlay = document.getElementById('auth-overlay');
+    if (user) {
+        // Si l'utilisateur est connecté, on cache la fiche de connexion
+        overlay.classList.add('hidden'); 
+        console.log("Utilisateur prêt : " + user.email);
+    } else {
+        // Sinon, on affiche la fiche
+        overlay.classList.remove('hidden');
+    }
+});
 // Lancer le contrôle dès le chargement de la page
 window.addEventListener('load', controleAcces);
