@@ -13,6 +13,39 @@
 </head>
 <body class="bg-slate-100 pb-20">
 
+
+    <div id="auth-overlay" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md mx-4">
+        <h2 class="text-2xl font-bold text-blue-900 mb-6 text-center">KA GESTION PRO</h2>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">  Votre Email</label>
+                <input type="email" id="login-email" class="w-full p-3 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500" placeholder="exemple@gmail.com">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                <input type="password" id="login-password" class="w-full p-3 border border-gray-300 rounded mt-1 focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+            </div>
+
+            <button onclick="seConnecter()" class="w-full bg-blue-900 text-white p-3 rounded-lg font-bold hover:bg-blue-800 transition">
+                SE CONNECTER
+            </button>
+            
+            <div class="text-center text-sm text-gray-500 my-2">ou</div>
+            
+            <button onclick="creerCompte()" class="w-full border-2 border-blue-900 text-blue-900 p-3 rounded-lg font-bold hover:bg-gray-100 transition">
+                CRÉER UN COMPTE
+            </button>
+        </div>
+        
+        <p class="text-xs text-center text-gray-400 mt-6">
+            Vos données seront sauvegardées automatiquement sur votre compte Cloud.
+        </p>
+    </div>
+</div>
+    
     <div id="verrou-licence" class="fixed inset-0 bg-blue-900 z-[100] flex flex-col items-center justify-center p-6 text-white ">
     <h1 class="text-2xl font-bold mb-4">KA GESTION PRO</h1>
     <p class="text-center mb-6 text-sm opacity-80">Cette application nécessite une licence activée pour fonctionner.</p>
