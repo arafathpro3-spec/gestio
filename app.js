@@ -128,9 +128,23 @@ onAuthStateChanged(auth, (user) => {
         overlay.classList.remove('hidden');
     }
 });
-// Lancer le contrôle dès le chargement de la page
+
+// Define the missing function
+async function controleAcces() {
+    console.log("Checking access...");
+    // Add your logic here, e.g., checking localStorage or a session cookie
+    const user = localStorage.getItem('user');
+    if (!user) {
+        console.log("Access denied: No user found.");
+        // Optional: window.location.href = 'login.html';
+    }
+}
+
+// Now this line will work because the function exists
 window.addEventListener('load', controleAcces);
 
+async function seConnecter() { /* ... */ }
+async function creerCompte() { /* ... */ }
 // Définis tes fonctions
 async function seConnecter() {
     const email = document.getElementById('login-email').value;
