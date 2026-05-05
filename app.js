@@ -13,17 +13,12 @@ function verifierLicence() {
     }
 }
 
+// 1. IMPORTS (Une seule fois, tout en haut)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Import the functions you need from the SDKs you need
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 2. CONFIGURATION (Tes clés réelles de la capture 54177.jpg)
 const firebaseConfig = {
   apiKey: "AIzaSyDiWZ08WxPfls42QN93kYasCncM35T_rG8",
   authDomain: "dlandgestion.firebaseapp.com",
@@ -34,56 +29,49 @@ const firebaseConfig = {
   measurementId: "G-YNGWQ0TJXH"
 };
 
-// Initialize Firebase
+
+// INITIALISATION
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-const db = getFirestore(app);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// --- GESTION DE L'UTILISATEUR ---
+// 3. FONCTION CRÉER COMPTE
+window.creerCompte = async function() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    
+    if(!email || !pass) return alert("Veuillez remplir les champs.");
 
-window.connexion = () => {
-    const email = document.getElementById('auth-email').value;
-    const pass = document.getElementById('auth-password').value;
-    signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+    try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        alert("Compte créé avec succès !");
+    } catch (e) {
+        alert("Erreur : " + e.message);
+    }
 };
 
-window.inscription = () => {
-    const email = document.getElementById('auth-email').value;
-    const pass = document.getElementById('auth-password').value;
-    createUserWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+// 4. FONCTION SE CONNECTER
+window.seConnecter = async function() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+    } catch (e) {
+        alert("Email ou mot de passe incorrect.");
+    }
 };
 
-window.deconnexion = () => signOut(auth);
-
-// Surveiller l'état de connexion
+// 5. GESTION DE L'AFFICHAGE (Masquer l'écran bleu si connecté)
 onAuthStateChanged(auth, (user) => {
+    const overlay = document.getElementById('auth-overlay');
     if (user) {
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('app-content').style.display = 'block';
-        chargerVentes(user.uid);
+        overlay.classList.add('hidden');
+        console.log("Connecté :", user.email);
     } else {
-        document.getElementById('auth-container').style.display = 'block';
-        document.getElementById('app-content').style.display = 'none';
+        overlay.classList.remove('hidden');
     }
 });
-
-// --- SAUVEGARDE ET RÉCUPÉRATION ---
-
-// Enregistrer une vente (Liée à l'UID)
-window.ajouterVente = async (nom, prix) => {
-    const user = auth.currentUser;
-    if (user) {
-        await addDoc(collection(db, "ventes"), {
-            produit: nom,
-            montant: prix,
-            userId: user.uid, // <--- C'est l'identifiant vital
-            date: serverTimestamp()
-        });
-    }
-};
-
 // Charger UNIQUEMENT les ventes de cet utilisateur
 function chargerVentes(userId) {
     const q = query(collection(db, "ventes"), where("userId", "==", userId));
