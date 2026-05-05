@@ -1,3 +1,9 @@
+// 1. IMPORTS (Une seule fois, tout en haut)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
 // Ta liste de clés valides (tu peux en créer plusieurs)
 const clesValides = [ "KARIM5764", "DLAND-2026-PRO", "BOHICON-SALES-01", "COTONOU-DEMO"];
 
@@ -13,10 +19,6 @@ function verifierLicence() {
     }
 }
 
-// 1. IMPORTS (Une seule fois, tout en haut)
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // 2. CONFIGURATION (Tes clés réelles de la capture 54177.jpg)
 const firebaseConfig = {
@@ -151,3 +153,4 @@ async function creerCompte() {
 // --- ÉTAPE CRUCIALE : Rendre les fonctions visibles pour le HTML ---
 window.seConnecter = seConnecter;
 window.creerCompte = creerCompte;
+window.cntrolAccess = controleAccess;
