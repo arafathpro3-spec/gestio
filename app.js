@@ -131,9 +131,6 @@ onAuthStateChanged(auth, (user) => {
 // Lancer le contrôle dès le chargement de la page
 window.addEventListener('load', controleAcces);
 
-
-const auth = getAuth(app);
-
 // Définis tes fonctions
 async function seConnecter() {
     const email = document.getElementById('login-email').value;
