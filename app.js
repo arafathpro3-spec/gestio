@@ -130,7 +130,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Define the missing function
-async function controleAcces() {
+async function controleAccess() {
     console.log("Checking access...");
     // Add your logic here, e.g., checking localStorage or a session cookie
     const user = localStorage.getItem('user');
