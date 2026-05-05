@@ -143,8 +143,6 @@ async function controleAcces() {
 // Now this line will work because the function exists
 window.addEventListener('load', controleAcces);
 
-async function seConnecter() { /* ... */ }
-async function creerCompte() { /* ... */ }
 // Définis tes fonctions
 async function seConnecter() {
     const email = document.getElementById('login-email').value;
