@@ -84,6 +84,10 @@ function chargerVentes(userId) {
     const q = query(collection(db, "ventes"), where("userId", "==", userId));
     onSnapshot(q, (snapshot) => {
         const liste = document.getElementById('historique-ventes');
+          if (!liste) {
+            console.warn("L'élément 'historique-ventes' n'a pas été trouvé sur cette page.");
+            return; 
+        }
         liste.innerHTML = "";
         snapshot.forEach((doc) => {
             const v = doc.data();
