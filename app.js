@@ -159,4 +159,4 @@ async function creerCompte() {
 // --- ÉTAPE CRUCIALE : Rendre les fonctions visibles pour le HTML ---
 window.seConnecter = seConnecter;
 window.creerCompte = creerCompte;
-window.cntrolAccess = controleAccess;
+window.controleAccess = controleAccess;
