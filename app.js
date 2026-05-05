@@ -82,12 +82,11 @@ function chargerVentes(userId) {
         liste.innerHTML = "";
         snapshot.forEach((doc) => {
             const v = doc.data();
-            liste.innerHTML += <li>${v.produit} : ${v.montant} F</li>;
+            liste.innerHTML += `<li>${v.produit} : ${v.montant} F</li>`;
         });
     });
 }
 
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const auth = getAuth();
 
