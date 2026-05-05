@@ -10,6 +10,7 @@
     <title>KA GESTION PRO</title>
     <script src="tailwind.js"></script>
     <script src="qrcode.js"></script>
+    <script src="app.js"></script>
 </head>
 <body class="bg-slate-100 pb-20">
 
@@ -447,6 +448,7 @@ window.validerVente = function() {
 };
     </script>
 
+  
     <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -456,12 +458,21 @@ window.validerVente = function() {
     });
   }
 </script>
-  <script  type="module" src="app.js"></script> 
+    
+  <script  type="module" src="app.js">
+      export function creerCompte() {
+    console.log("Creating account...");
+}
+      
+window.creerCompte = creerCompte; // Manually expose to global scope
+  </script> 
+    
     <script>
   function seConnecter() {
     console.log("Connecting...");
   }
 </script>
+    
 <button onclick="seConnecter()">Login</button>
 </body>
 </html>
