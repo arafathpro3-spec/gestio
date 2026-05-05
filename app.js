@@ -112,35 +112,46 @@ async function controleAccess() {
 // Now this line will work because the function exists
 window.addEventListener('load', controleAccess);
 // --- AJOUTER UNE VENTE ---
-async function ajouterVente() {
-    const produit = document.querySelector('select').value; // Récupère le nom du produit
-    const quantite = document.querySelector('input[type="number"]').value;
-    const prix = document.querySelectorAll('input')[1].value; // Récupère le prix
+
+async function validerVente() {
     const user = auth.currentUser;
 
-    if (!user) return alert("Connectez-vous d'abord !");
-    if (!prix || prix <= 0) return alert("Veuillez entrer un prix valide.");
+    if (!user) {
+        alert("Erreur : Vous devez être connecté pour enregistrer une vente.");
+        return;
+    }
+
+    // Récupération des valeurs depuis ton interface
+    const produitNom = document.querySelector('select').value; 
+    const prixUnitaire = document.getElementById('prix-unitaire').value; // Vérifie cet ID dans ton HTML
+    const quantite = document.getElementById('quantite-input').value; // Vérifie cet ID aussi
+
+    if (!prixUnitaire || prixUnitaire <= 0) {
+        alert("Veuillez entrer un prix valide.");
+        return;
+    }
 
     try {
-        const montantTotal = prix * quantite;
-        
-        // Envoi vers Firestore
+        // Envoi des données vers la collection "ventes" de Firebase
         await addDoc(collection(db, "ventes"), {
-            produit: produit,
-            montant: montantTotal,
-            userId: user.uid, // C'est ici qu'on lie la vente à ton compte
+            produit: produitNom,
+            montant: Number(prixUnitaire) * Number(quantite),
+            userId: user.uid, // C'est CA qui permet de voir les données sur l'autre téléphone
             date: new Date().toISOString()
         });
 
-        alert("Vente enregistrée avec succès !");
+        alert("Vente validée et synchronisée !");
+        
+        // Optionnel : vider les champs après validation
+        document.getElementById('prix-unitaire').value = "";
     } catch (error) {
-        console.error("Erreur Firebase :", error);
-        alert("Erreur lors de l'enregistrement.");
+        console.error("Erreur lors de l'envoi :", error);
+        alert("Erreur de connexion à la base de données.");
     }
 }
 
-// Rendre la fonction visible pour le bouton HTML
-window.ajouterVente = ajouterVente;
+// Très important pour que le bouton HTML puisse trouver la fonction
+window.validerVente = validerVente;
 
 // --- ÉTAPE CRUCIALE : Rendre les fonctions visibles pour le HTML ---
 window.seConnecter = seConnecter;
