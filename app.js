@@ -99,6 +99,19 @@ async function controleAccess() {
     }
 }
 
+function chargerVentes(userId) {
+   onSnapshot(q, (snapshot) => {
+    const liste = document.getElementById('historique-ventes');
+    if (!liste) return;
+
+    let htmlContent = ""; // On crée une chaîne vide
+    snapshot.forEach((doc) => {
+        const v = doc.data();
+        htmlContent += `<li>${v.produit} : ${v.montant} F</li>`;
+    });
+
+    liste.innerHTML = htmlContent; // Une seule mise à jour du DOM
+});
 // Now this line will work because the function exists
 window.addEventListener('load', controleAccess);
 
@@ -106,3 +119,4 @@ window.addEventListener('load', controleAccess);
 window.seConnecter = seConnecter;
 window.creerCompte = creerCompte;
 window.controleAccess = controleAccess;
+window.chargerVentes = chargerVentes;
