@@ -88,8 +88,6 @@ function chargerVentes(userId) {
 }
 
 
-const auth = getAuth();
-
 // --- Fonction Se Connecter ---
 window.seConnecter = () => {
     const email = document.getElementById('login-email').value;
