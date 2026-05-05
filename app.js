@@ -1,7 +1,7 @@
 // 1. IMPORTS (Une seule fois, tout en haut)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, query, where, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
 // Ta liste de clés valides (tu peux en créer plusieurs)
@@ -111,6 +111,36 @@ async function controleAccess() {
 
 // Now this line will work because the function exists
 window.addEventListener('load', controleAccess);
+// --- AJOUTER UNE VENTE ---
+async function ajouterVente() {
+    const produit = document.querySelector('select').value; // Récupère le nom du produit
+    const quantite = document.querySelector('input[type="number"]').value;
+    const prix = document.querySelectorAll('input')[1].value; // Récupère le prix
+    const user = auth.currentUser;
+
+    if (!user) return alert("Connectez-vous d'abord !");
+    if (!prix || prix <= 0) return alert("Veuillez entrer un prix valide.");
+
+    try {
+        const montantTotal = prix * quantite;
+        
+        // Envoi vers Firestore
+        await addDoc(collection(db, "ventes"), {
+            produit: produit,
+            montant: montantTotal,
+            userId: user.uid, // C'est ici qu'on lie la vente à ton compte
+            date: new Date().toISOString()
+        });
+
+        alert("Vente enregistrée avec succès !");
+    } catch (error) {
+        console.error("Erreur Firebase :", error);
+        alert("Erreur lors de l'enregistrement.");
+    }
+}
+
+// Rendre la fonction visible pour le bouton HTML
+window.ajouterVente = ajouterVente;
 
 // --- ÉTAPE CRUCIALE : Rendre les fonctions visibles pour le HTML ---
 window.seConnecter = seConnecter;
