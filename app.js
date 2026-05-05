@@ -70,7 +70,12 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         overlay.classList.add('hidden');
         console.log("Connecté :", user.email);
+        
+        // AJOUTE CETTE LIGNE ICI :
+        chargerVentes(user.uid); 
+        
     } else {
+        overlay.classList.add('flex'); // Assure-toi qu'il s'affiche
         overlay.classList.remove('hidden');
     }
 });
