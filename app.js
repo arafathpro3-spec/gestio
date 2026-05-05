@@ -141,7 +141,7 @@ async function controleAcces() {
 }
 
 // Now this line will work because the function exists
-window.addEventListener('load', controleAcces);
+window.addEventListener('load', controleAccess);
 
 // Définis tes fonctions
 async function seConnecter() {
