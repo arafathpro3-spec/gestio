@@ -408,20 +408,32 @@ window.validerVente = function() {
 
     let beneficeTotalVente = 0;
 
-    // 1. Mise à jour du stock et calcul du bénéfice
-    panier.forEach(articlePanier => {
-        // Trouver le produit correspondant dans la liste globale 'produits'
-        const produitOriginal = produits.find(p => p.id == articlePanier.id);
+   // 1. Mise à jour du stock et calcul du bénéfice
+panier.forEach(async (articlePanier) => {
+    const produitOriginal = produits.find(p => p.id === articlePanier.id);
+
+    if (produitOriginal) {
+        const nouveauStock = produitOriginal.stock - articlePanier.qte_v;
         
-        if (produitOriginal) {
-            // Soustraire la quantité vendue du stock réel
-            produitOriginal.stock -= articlePanier.qte_v;
-            
-            // Calculer le bénéfice pour cet article : (PrixVente - PrixAchat) * Quantité
-            const beneficeArticle = (articlePanier.vente - articlePanier.achat) * articlePanier.qte_v;
-            beneficeTotalVente += beneficeArticle;
-        }
-    });
+        // --- CRUCIAL : Mettre à jour Firebase pour le stock ---
+        const produitRef = doc(db, "produits", articlePanier.id);
+        await updateDoc(produitRef, {
+            stock: nouveauStock
+        });
+
+        const beneficeArticle = (articlePanier.vente - articlePanier.achat) * articlePanier.qte_v;
+        beneficeTotalVente += beneficeArticle;
+    }
+});
+
+// 2. Envoi de la vente avec le bénéfice calculé
+await addDoc(collection(db, "ventes"), {
+    articles: panier, // On envoie tout le panier
+    total: totalPanier,
+    benefice: beneficeTotalVente, // On enregistre le bénéfice ici
+    date: new Date().toLocaleString('fr-FR'),
+    userId: user.uid
+});
 
  
 
