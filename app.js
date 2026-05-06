@@ -143,10 +143,10 @@ async function validerVente() {
         alert("Vente validée et synchronisée !");
 
         // Vide la liste visuelle du panier
-document.getElementById('ton-id-du-conteneur-panier').innerHTML = "";
+document.getElementById('panier_liste').innerHTML = "";
 
 // Réinitialise le total à 0
-document.getElementById('total-panier').innerText = "0 F";
+document.getElementById('total_panier').innerText = "0 F";
         
         // Optionnel : vider les champs après validation
         document.getElementById('prix_final_vente').value = "";
