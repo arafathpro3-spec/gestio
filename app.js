@@ -122,9 +122,9 @@ async function validerVente() {
     }
 
     // Récupération des valeurs depuis ton interface
-    const produitNom = document.querySelector('select').value; 
-    const prixUnitaire = document.getElementById('prix-unitaire').value; // Vérifie cet ID dans ton HTML
-    const quantite = document.getElementById('quantite-input').value; // Vérifie cet ID aussi
+    const produitNom = document.querySelector('#select_produit').value; 
+    const prixUnitaire = document.getElementById('prix_final_vente').value; // Vérifie cet ID dans ton HTML
+    const quantite = document.getElementById('qte_vente').value; // Vérifie cet ID aussi
 
     if (!prixUnitaire || prixUnitaire <= 0) {
         alert("Veuillez entrer un prix valide.");
@@ -143,7 +143,7 @@ async function validerVente() {
         alert("Vente validée et synchronisée !");
         
         // Optionnel : vider les champs après validation
-        document.getElementById('prix-unitaire').value = "";
+        document.getElementById('prix_final_vente').value = "";
     } catch (error) {
         console.error("Erreur lors de l'envoi :", error);
         alert("Erreur de connexion à la base de données.");
