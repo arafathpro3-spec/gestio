@@ -137,10 +137,16 @@ async function validerVente() {
             produit: produitNom,
             montant: Number(prixUnitaire) * Number(quantite),
             userId: user.uid, // C'est CA qui permet de voir les données sur l'autre téléphone
-            date: new Date().toISOString()
+            date: new Date().toLocaleString()
         });
 
         alert("Vente validée et synchronisée !");
+
+        // Vide la liste visuelle du panier
+document.getElementById('ton-id-du-conteneur-panier').innerHTML = "";
+
+// Réinitialise le total à 0
+document.getElementById('total-panier').innerText = "0 F";
         
         // Optionnel : vider les champs après validation
         document.getElementById('prix_final_vente').value = "";
